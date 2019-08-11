@@ -3,6 +3,7 @@ import codecs
 from PIL import Image, ImageOps
 import math
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 
 class Label:
@@ -40,8 +41,10 @@ class DataGenerator:
         self.number2object = {i: word for word, i in self.object2number.items()}
         self.X = None
         self.Y = None
-        self.test = None
-        self.train = None
+        self.Xtest = None
+        self.Xtrain = None
+        self.Ytest = None
+        self.Ytrain = None
 
         if not os.path.exists(folder_with_images):
             print("error - {} doesn't exist".format(folder_with_images))
@@ -87,7 +90,7 @@ class DataGenerator:
         new_im = new_im.crop((label.x_left, label.y_top, label.x_right, label.y_bottom))
         new_im = new_im.resize([Label.size_for_cutting, Label.size_for_cutting], Image.ANTIALIAS)
 
-        new_im.show()
+        # new_im.show()
         return np.asarray(new_im)
 
     @classmethod
@@ -109,7 +112,6 @@ class DataGenerator:
         images_names = sorted(os.listdir(self.folder_with_images))
 
         for image_name in images_names:
-            print(image_name)
             label_name = image_name[:-3] + 'txt'
             labels = self.read_labels(self.folder_with_labels + label_name)
             y_for_labels = [self.object2number[label.object_type] for label in labels]
@@ -117,7 +119,14 @@ class DataGenerator:
             self.X = self.X + images
             self.Y = self.Y + y_for_labels
 
-    def generate_batches(self, batch_size: int):
+        self.X = np.array(self.X)
+        self.Y = np.array(self.Y)
+
+    def shuffle(self):
+        self.Xtrain, self.Xtest, self.Ytrain, self.Ytest = train_test_split(self.X, self.Y, test_size=0.2,
+                                                                            random_state=0)
+
+    def get_train_test(self, ratio: float):
         pass
 
 
@@ -133,8 +142,9 @@ if __name__ == "__main__":
         print(new_img.size)
 
     if test == 2:
-        data_generator = DataGenerator("/home/olga/my/work/aid/data/for_debag_program/images/","/home/olga/my/work/aid/data/for_debag_program/labels/")
+        data_generator = DataGenerator("/home/olga/my/work/aid/data/for_debag_program/images/",
+                                       "/home/olga/my/work/aid/data/for_debag_program/labels/")
         data_generator.read_data()
-        print(len(data_generator.X))
-        print(len(data_generator.Y))
-
+        data_generator.shuffle()
+        print(len(data_generator.Xtrain))
+        print(len(data_generator.Ytrain))
