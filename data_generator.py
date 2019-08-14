@@ -122,12 +122,9 @@ class DataGenerator:
         self.X = np.array(self.X)
         self.Y = np.array(self.Y)
 
-    def shuffle(self):
-        self.Xtrain, self.Xtest, self.Ytrain, self.Ytest = train_test_split(self.X, self.Y, test_size=0.2,
+    def create_train_test(self, ratio=0.2):
+        self.Xtrain, self.Xtest, self.Ytrain, self.Ytest = train_test_split(self.X, self.Y, test_size=ratio,
                                                                             random_state=0)
-
-    def get_train_test(self, ratio: float):
-        pass
 
 
 if __name__ == "__main__":
@@ -142,8 +139,8 @@ if __name__ == "__main__":
         print(new_img.size)
 
     if test == 2:
-        data_generator = DataGenerator("/home/olga/my/work/aid/data/for_debag_program/images/",
-                                       "/home/olga/my/work/aid/data/for_debag_program/labels/")
+        data_generator = DataGenerator("/home/olga/my/work/aid/data/for_debug/images/",
+                                       "/home/olga/my/work/aid/data/for_debug/labels/")
         data_generator.read_data()
         data_generator.shuffle()
         print(len(data_generator.Xtrain))

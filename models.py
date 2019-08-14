@@ -5,7 +5,9 @@ from keras.optimizers import Adam
 from keras.applications.mobilenet_v2 import MobileNetV2
 
 
-def create_first_model(input_shape=[64, 64, 3]):
+def create_first_model(input_shape=None):
+    if input_shape is None:
+        input_shape = [64, 64, 3]
     model = Sequential()
     model.add(Conv2D(32, (3, 3), input_shape=input_shape))
     model.add(Activation('relu'))
@@ -32,7 +34,9 @@ def create_first_model(input_shape=[64, 64, 3]):
     return model
 
 
-def create_second_model(input_shape=[64, 64, 3]):
+def create_second_model(input_shape=None):
+    if input_shape is None:
+        input_shape = [64, 64, 3]
     model = Sequential()
     model.add(Conv2D(64, (3, 3), input_shape=input_shape))
     model.add(Activation('relu'))
@@ -62,7 +66,9 @@ def create_second_model(input_shape=[64, 64, 3]):
     return model
 
 
-def create_pretrained_mobileNet(input_shape=[64, 64, 3], is_base_layer_trainable: bool = True):
+def create_pretrained_mobileNet(input_shape=None, is_base_layer_trainable=True):
+    if input_shape is None:
+        input_shape = [64, 64, 3]
     base_model = MobileNetV2(input_shape=input_shape, weights='imagenet', include_top=False)
 
     x = base_model.output
