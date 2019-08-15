@@ -135,13 +135,12 @@ if __name__ == "__main__":
         label = Label("Car 0 0 0 0 10 1240 370")
         label.make_borders_square_with_ideal_size_or_bigger()
         new_img = DataGenerator.cut_one_image(im, label)
-        new_img.show()
         print(new_img.size)
 
     if test == 2:
         data_generator = DataGenerator("/home/olga/my/work/aid/data/for_debug/images/",
                                        "/home/olga/my/work/aid/data/for_debug/labels/")
         data_generator.read_data()
-        data_generator.shuffle()
+        data_generator.create_train_test()
         print(len(data_generator.Xtrain))
         print(len(data_generator.Ytrain))
