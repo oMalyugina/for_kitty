@@ -86,3 +86,9 @@ def create_pretrained_mobileNet(input_shape=None, is_base_layer_trainable=True):
                   loss='sparse_categorical_crossentropy',
                   metrics=['sparse_categorical_accuracy'])
     return model
+
+
+if __name__ == "__main__":
+    model1 = create_first_model()
+    model2 = create_pretrained_mobileNet([128, 128, 3], False)
+    model3 = create_second_model()
