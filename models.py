@@ -6,6 +6,8 @@ from keras.applications.mobilenet_v2 import MobileNetV2
 
 
 def create_first_model(input_shape=None):
+    # this model shows the best tradeof between size of model and quality. accuracy is near 90% on dirty test data
+    # (I often agree with model's errors)
     if input_shape is None:
         input_shape = [64, 64, 3]
     model = Sequential()
@@ -35,6 +37,7 @@ def create_first_model(input_shape=None):
 
 
 def create_second_model(input_shape=None):
+    # this model shows similar quality with first model, but larger size
     if input_shape is None:
         input_shape = [64, 64, 3]
     model = Sequential()
@@ -67,6 +70,7 @@ def create_second_model(input_shape=None):
 
 
 def create_pretrained_mobileNet(input_shape=None, is_base_layer_trainable=True):
+    # shows bad results. Can't detect a classes which doesn't exist in imagenet (or I don't train anough)
     if input_shape is None:
         input_shape = [64, 64, 3]
     base_model = MobileNetV2(input_shape=input_shape, weights='imagenet', include_top=False)
